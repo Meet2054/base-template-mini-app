@@ -1,0 +1,38 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  walletAddress String
+  telegramId   String
+  preferences  Json?
+  snapshots    WalletSnapshot[]
+  notifications Notification[]
+}
+
+model WalletSnapshot {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  balances    Json
+  totalValue  Float
+}
+
+model Notification {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  message     String
+  type        String
+  sent        Boolean  @default(false)
+}
