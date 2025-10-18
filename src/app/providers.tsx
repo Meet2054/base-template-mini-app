@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { MiniAppProvider } from "@neynar/react";
+import { ToastProvider } from "~/components/providers/ToastProvider";
 
 const WagmiProvider = dynamic(
   () => import("~/components/providers/WagmiProvider"),
@@ -13,7 +14,9 @@ const WagmiProvider = dynamic(
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <WagmiProvider>
-      <MiniAppProvider analyticsEnabled={true}>{children}</MiniAppProvider>
+      <MiniAppProvider analyticsEnabled={true}>
+        <ToastProvider>{children}</ToastProvider>
+      </MiniAppProvider>
     </WagmiProvider>
   );
 }
