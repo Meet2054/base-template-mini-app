@@ -201,12 +201,75 @@ export default function DashboardPage() {
             )}
           </div>
 
-          <Button
-            onClick={fetchPortfolioData}
-            className="mt-6 bg-gradient-to-r from-purple-500 to-pink-500"
-          >
-            Refresh Data
-          </Button>
+          <div className="flex gap-4 mt-6">
+            <Button
+              onClick={fetchPortfolioData}
+              className="bg-gradient-to-r from-purple-500 to-pink-500"
+            >
+              Refresh Data
+            </Button>
+            <Button
+              onClick={() => {
+                // Trigger a demo notification
+                const scenarios = [
+                  {
+                    title: "🚀 Price Alert",
+                    message: "ETH is up 5% in the last hour! Consider taking profits.",
+                    type: "success"
+                  },
+                  {
+                    title: "⚠️ Whale Alert",
+                    message: "Large transfer detected: 1000 ETH moved to Binance.",
+                    type: "warning"
+                  },
+                  {
+                    title: "💡 AI Insight",
+                    message: "Unusual trading pattern detected in your DeFi tokens. Market manipulation risk detected.",
+                    type: "info"
+                  },
+                  {
+                    title: "🔒 Security Alert",
+                    message: "High gas price spike detected. Potential MEV attack in progress.",
+                    type: "error"
+                  }
+                ];
+
+                // Pick a random scenario
+                const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+                
+                // Create a notification element
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg max-w-sm transform transition-all duration-500 translate-x-full 
+                  ${scenario.type === 'success' ? 'bg-green-500' :
+                    scenario.type === 'warning' ? 'bg-yellow-500' :
+                    scenario.type === 'error' ? 'bg-red-500' : 'bg-blue-500'}`;
+                
+                notification.innerHTML = `
+                  <h4 class="font-bold text-white mb-1">${scenario.title}</h4>
+                  <p class="text-white/90 text-sm">${scenario.message}</p>
+                `;
+
+                // Add to document
+                document.body.appendChild(notification);
+
+                // Animate in
+                setTimeout(() => {
+                  notification.classList.remove('translate-x-full');
+                }, 100);
+
+                // Remove after 5 seconds
+                setTimeout(() => {
+                  notification.classList.add('translate-x-full');
+                  setTimeout(() => {
+                    document.body.removeChild(notification);
+                  }, 500);
+                }, 5000);
+              }}
+              className="bg-gradient-to-r from-indigo-500 to-blue-500"
+            >
+              Trigger Demo Alert
+            </Button>
+          </div>
         </>
       )}
     </div>
